@@ -74,7 +74,7 @@ while not end_of_game:
         if letter == guess:  
             display[position] = letter
     
-    if guess != chosen_word:
+    if guess not in chosen_word:
         lives -= 1
         if lives == 0:
             end_of_game = True
