@@ -42,13 +42,12 @@ def avaliable_drinks(drinks):
     for drink in drinks:
         print(f"{drink}: ${drinks[drink]}")
 
+
 def serving(drinks):
     """Prompts customer to enter his/her request and returns the request"""
     user = False  
-
     while not user:
         customer_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
-
         for drink in drinks:
             if customer_input == drink:
                 user = True
@@ -58,7 +57,6 @@ def check_resources(drinks, resources, customer_input, recipes):
     """Checks the availability of resources for the customer's
     request and returns True if enough resources
     """
-    
     if customer_input in drinks:
         for drink in recipes.keys():
             if customer_input == drink:
@@ -127,7 +125,6 @@ def check_transaction(customer_input, total, drinks, resources):
 
 
 continue_serving = True
-
 while continue_serving:
     print("Hi, Welcome to my coffee shop!")
     print()
