@@ -3,12 +3,11 @@
 
 
 # Avaliable resources in the coffee machine
-amount = [0.25, 0.10, 0.05, 0.01]
 
 resources = {
-        'Water': 80000,
-        'Milk': 50000,
-        'Coffee': 20000,
+        'Water': 1000,
+        'Milk': 600,
+        'Coffee': 500,
         'Money': 0.0
 }
 
@@ -44,20 +43,24 @@ def avaliable_drinks(drinks):
         print(f"{drink}: ${drinks[drink]}")
 
 def serving(drinks):
-    """Prompts customer to enter request and returns the request"""
-    customer_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
-    for drink in drinks:
-        if customer_input == drink:
-            return customer_input
-        elif customer_input != drink:
-            return "Enter the listed drinks"
+    """Prompts customer to enter his/her request and returns the request"""
+    user = False  
+
+    while not user:
+        customer_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
+
+        for drink in drinks:
+            if customer_input == drink:
+                user = True
+                return customer_input
 
 def check_resources(drinks, resources, customer_input, recipes):
     """Checks the availability of resources for the customer's
     request and returns True if enough resources
     """
+    
     if customer_input in drinks:
-        for drink in recipeis.keys():
+        for drink in recipes.keys():
             if customer_input == drink:
                 for recipe, quantity in recipes[drink].items():
                     if recipe == "water" and resources["Water"] > quantity:
@@ -81,11 +84,11 @@ def resource_report(resources):
 
 def process_coin(amount):
     """Process user currency"""
-    total = 0.0
-    coins = amount.split(" ")
-
-    for coin in range(0, len(coins)):
-        total += float(coins[coin])
+    print("Please insert coins.")
+    total = int(input("how many quarters?: ")) * 0.25
+    total += int(input("how many dimes?: ")) * 0.1
+    total += int(input("how many nickles?: ")) * 0.05
+    total += int(input("how many pennies?: ")) * 0.01
     return total
 
 
@@ -132,12 +135,13 @@ while continue_serving:
     print()
     avaliable_drinks(drinks)
     print()
-
+    
     customer_input = serving(drinks)
     print()
+    
 
-    check_resources(drinks, resources, customer_input, recipes)
-    amount = input("Enter a representation of amount separated with space (quarters = $0.25, dimes = $0.10, nickles = $0.05, pennies = $0.01): ")
+    amount = input("Enter a representation of coins amount (1 quarters = $0.25, 1 dimes = $0.10, 1 nickles = $0.05, 1 pennies = $0.01): ")
+    print()
 
     total = process_coin(amount) 
     print(f"Total money entered: ${total}\n") 
@@ -145,7 +149,9 @@ while continue_serving:
     transaction = check_transaction(customer_input, total, drinks, resources)
     print(f"{transaction}\n")
 
+    check_resources(drinks, resources, customer_input, recipes)
     print(f"Current Resources Avaliable:\n{resource_report(resources)}")
+
     coffee_machine = input("For maintenance of the coffee machine, Enter 'off' to turnoff or 'ignore' to proceed: ").lower()
     if coffee_machine == "off":
         continue_serving = False
