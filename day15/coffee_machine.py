@@ -135,20 +135,14 @@ while continue_serving:
     print()
     avaliable_drinks(drinks)
     print()
-    
     customer_input = serving(drinks)
     print()
-    
-
     amount = input("Enter a representation of coins amount (1 quarters = $0.25, 1 dimes = $0.10, 1 nickles = $0.05, 1 pennies = $0.01): ")
     print()
-
     total = process_coin(amount) 
     print(f"Total money entered: ${total}\n") 
-    
     transaction = check_transaction(customer_input, total, drinks, resources)
     print(f"{transaction}\n")
-
     check_resources(drinks, resources, customer_input, recipes)
     print(f"Current Resources Avaliable:\n{resource_report(resources)}")
 
@@ -156,5 +150,3 @@ while continue_serving:
     if coffee_machine == "off":
         continue_serving = False
         print("Coffee machine down, Try again later")
-
-
