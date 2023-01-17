@@ -45,13 +45,17 @@ def avaliable_drinks(drinks):
 
 def serving(drinks):
     """Prompts customer to enter his/her request and returns the request"""
-    user = False  
+    user = False
     while not user:
         customer_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
         for drink in drinks:
             if customer_input == drink:
                 user = True
-                return customer_input
+                return "customer_input"
+            elif customer_input == "report":
+                return "report"
+            elif customer_input == "off":
+                return "off"
 
 def check_resources(drinks, resources, customer_input, recipes):
     """Checks the availability of resources for the customer's
@@ -69,7 +73,7 @@ def check_resources(drinks, resources, customer_input, recipes):
                         resources["Coffee"] -= quantity
                     else:
                         print(f"Sorry there is not enough {recipe}.")
-                break
+                        break
 
 def resource_report(resources):
     """Prints the current resources and it's available values"""
@@ -128,22 +132,22 @@ continue_serving = True
 while continue_serving:
     print("Hi, Welcome to my coffee shop!")
     print()
-    print(f"Resources Avaliable:\n{resource_report(resources)}")
+    avaliable_drinks(drinks)  
     print()
-    avaliable_drinks(drinks)
-    print()
-    customer_input = serving(drinks)
-    print()
-    amount = input("Enter a representation of coins amount (1 quarters = $0.25, 1 dimes = $0.10, 1 nickles = $0.05, 1 pennies = $0.01): ")
-    print()
-    total = process_coin(amount) 
-    print(f"Total money entered: ${total}\n") 
-    transaction = check_transaction(customer_input, total, drinks, resources)
-    print(f"{transaction}\n")
-    check_resources(drinks, resources, customer_input, recipes)
-    print(f"Current Resources Avaliable:\n{resource_report(resources)}")
 
-    coffee_machine = input("For maintenance of the coffee machine, Enter 'off' to turnoff or 'ignore' to proceed: ").lower()
-    if coffee_machine == "off":
+    customer_input = serving(drinks)
+    if customer_input == "off":
+        print("Goodbye")
         continue_serving = False
-        print("Coffee machine down, Try again later")
+    elif customer_input == "report":
+        print()
+        print(f"Resources Avaliable:\n{resource_report(resources)}")
+        print()
+    else:
+        amount = input("Enter a representation of coins amount (1 quarters = $0.25, 1 dimes = $0.10, 1 nickles = $0.05, 1 pennies = $0.01): ")
+        print()
+        total = process_coin(amount) 
+        print(f"Total money entered: ${total}\n") 
+        transaction = check_transaction(customer_input, total, drinks, resources)
+        print(f"{transaction}\n")
+        check_resources(drinks, resources, customer_input, recipes)
