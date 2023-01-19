@@ -1,0 +1,16 @@
+from turtle import Turtle, Screen
+
+#create a new object from turtle
+tom = Turtle()
+tom.shape("turtle") #change the shape
+tom.color("coral", "green") #border, fill
+tom.forward(100) #move forward
+print(tom) #object
+
+#accessing attribute (obect.attribute
+my_screen = screen()
+print(my_screen.canvheight)  #height of the screen
+print(my_screen.canvwidth)  #width of the screen
+
+#accessing methods (obect,method())
+my_screen.exitonclick()  #run until we click on the screen
