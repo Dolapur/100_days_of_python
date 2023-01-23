@@ -2,71 +2,64 @@
 """coffee_machine module"""
 
 
-# Avaliable resources in the coffee machine
-
-resources = {
-        'Water': 1000,
-        'Milk': 600,
-        'Coffee': 500,
-        'Money': 0.0
+MENU = {   
+    "espresso": {       
+        "ingredients": {    
+            "water": 50,  
+            "coffee": 18,
+            "milk": 10,
+        },         
+        "cost": 1.5,       
+    },         
+    "latte": {    
+        "ingredients": {   
+            "water": 200,   
+            "coffee": 150, 
+            "milk": 35,    
+        },       
+        "cost": 2.5,  
+    },      
+    "cappuccino": {     
+        "ingredients": {    
+            "water": 250,  
+            "coffee": 130,   
+            "milk": 50,     
+        },      
+        "cost": 3.0,    
+    },         
 }
+
+profit = 0.0
+
+resources = {        
+    'water': 1000,      
+    'milk': 600,     
+    'coffee':500    
+}
+
 
 # Names of drinks and their prices
 drinks = {
-        'espresso': 1.25,
-        'latte': 2.50,
-        'cappuccino': 2.13
+    'espresso': 1.50,
+    'latte': 2.50,
+    'cappuccino': 3.00
 }
 
-# Recipe detail for coffee
-recipes = {
-        'espresso': {
-            'water': 150,
-            'milk':  50,
-            'coffee': 70,
-        },
-        'latte':  {
-            'water': 200,
-            'milk': 90,
-            'coffee': 100,
-        },
-        'cappuccino': {
-            'water':250,
-            'milk': 70,
-            'coffee': 90,
-        }
-}
 
 def prices(drinks):
     """Prints the price for each drink"""
     for drink in drinks:
         print(f"{drink}: ${drinks[drink]}")
 
-
-def serving(drinks):
-    """Prompts customer to enter his/her request and returns the request"""
-    user = False
-    while not user:
-        customer_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
-        for drink in drinks:
-            if customer_input == drink:
-                user = True
-                return "customer_input"
-            elif customer_input == "report":
-                return "report"
-            elif customer_input == "off":
-                return "off"
-
 def resource_report(resources):
     """Prints the current resources and it's available values"""
-    resource_water = resources["Water"]
-    resource_milk = resources["Milk"]
-    resource_coffee = resources["Coffee"]
-    resource_money = resources["Money"]
-    return(f"{resource_water}ml\n{resource_milk}ml\n{resource_coffee}g\n${resource_money}")
+    resource_water = resources["water"]
+    resource_milk = resources["milk"]
+    resource_coffee = resources["coffee"]
+    return(f"{resource_water}ml\n{resource_milk}ml\n{resource_coffee}g\n${profit}")
 
 
-def process_coin(prices, customer_input):
+def process_coin():
     """Process user currency"""
     print("Please insert coins.")
     total_money = int(input("how many quarters?: ")) * 0.25
@@ -75,6 +68,28 @@ def process_coin(prices, customer_input):
     total_money += int(input("how many pennies?: ")) * 0.01
     return total_money
 
+def check_resources(inputs):
+    for item in inputs:
+        if inputs[item] >= resources[item]:
+            print(f"Sorry, there's not enough [item]")
+    return True
+
+def check_transaction(payment, drink_cost):
+    if payment >= drink_cost:
+        change = round(payment - drink_cost, 2)
+        print(f"Here is {change} change refunded")
+        global profit
+        profit += drink_cost
+        return True
+    else:
+        print("Sorry, that's not enough money, Money refunded")
+        return False
+
+def make_coffee(name, ingredients):
+    for item in ingredients:
+        resources[item] -= ingredients[item]
+    print(f"Here's your {name}. Enjoy!")
+
 
 continue_serving = True
 while continue_serving:
@@ -82,19 +97,25 @@ while continue_serving:
     print()
     prices(drinks)  
     print()
-
-    customer_input = serving(drinks)
-    if customer_input == "off":
-        print("Goodbye")
-        continue_serving = False
-    elif customer_input == "report":
+  
+    customer_input = input("What would you like? (espresso/latte/cappuccino): ").lower()
+    try:
+        if customer_input == "off":
+            print("Goodbye")
+            continue_serving = False
+        elif customer_input == "report":
+            print()
+            print(f"Resources Avaliable:\n{resource_report(resources)}")
+            print()
+        elif customer_input is  "espresso" or "latte" or "cappuccino":
+            drink = MENU[customer_input]
+            if check_resources(drink['ingredients']):
+                payment = process_coin()
+                print(f"Total money entered: ${payment}\n") 
+                if check_transaction(payment, drink['cost']):
+                    make_coffee(customer_input, drink['ingredients'])
+                    print()
+    except KeyError:
+        print(f"{customer_input} not listed in the coffee names")
         print()
-        print(f"Resources Avaliable:\n{resource_report(resources)}")
-        print()
-    else:
-        sufficient_resource= check_resources(drinks, resources, customer_input, recipes)
-        total_money = process_coin(customer_input, prices) 
-        print(f"Total money entered: ${total_money}\n") 
-        transaction = check_transaction(customer_input, total_money, drinks, resources)
-        print(f"{transaction}\n")
-
+        break
