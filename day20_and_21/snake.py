@@ -3,8 +3,8 @@
 import turtle as t
 
 
-POSITIONS = [(0, 0), (-20, 0), (-40, 0)]                                           
-MOVE_POSITION = 20
+POSITIONS = [(0, 0), (-10, 0), (-10, 0)]                                           
+MOVE_POSITION = 10
 UP = 90
 DOWN = 270
 LEFT = 180
@@ -18,6 +18,7 @@ class Snake:
     def create_snake_body(self):
         for position in POSITIONS:
             obj = t.Turtle("square")
+            obj.shapesize(0.5, 0.5)
             obj.color("white")
             obj.penup()
             obj.goto(position)
