@@ -5,13 +5,13 @@ from twilio.rest import Client
 from twilio.http.http_client import TwilioHttpClient
 
 OWM_endpoint = "https://api.openweathermap.org/data/2.5/onecall"
-api_key = os.environ.get(input("Enter Your Registered API Key: "))
+api_key = os.environ.get("OWM_API_KEY")
 
-account_sid = input("Enter Your Twilio Account SID: ")
-auth_token = os.environ.get(input("Enter Your Twilio Auth Token: "))
+account_sid = os.environ.get("ACCOUNT_SID")
+auth_token = os.environ.get("AUTH_TOKEN")
 
-TWILIO_TRIAL_NUMBER = input("Enter Your Twilio Trial Number: ")
-RECIPIENT_NUMBER =input("Enter Your Twilio Verified Number: ")
+TWILIO_TRIAL_NUMBER = os.environ.get("TWILIO_TRIAL_NUMBER")
+RECIPIENT_NUMBER = os.environ.get("RECIPIENT_NUMBER")
 
 weather_parameters = {
     "lat": 6.524379,
