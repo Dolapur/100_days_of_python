@@ -39,7 +39,7 @@ pixel_url = f"{pixela_url}/{USERNAME}/graphs/{GRAPH_ID}"
 today = datetime.now()
 pixel_params = {
     "date": today.strftime("%Y%m%d"),
-    "quantity": "5",
+    "quantity": input("Enter number of commits for today: "),
 }
 response = requests.post(pixel_url, json=pixel_params, headers=headers)
 print(response.text)
